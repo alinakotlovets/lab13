@@ -2,11 +2,11 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'note.dart';
 
-class DatabaseHelper {
-  static final DatabaseHelper _instance = DatabaseHelper._internal();
-  factory DatabaseHelper() => _instance;
+class NoteDatabase {
+  static final NoteDatabase _instance = NoteDatabase._internal();
+  factory NoteDatabase() => _instance;
 
-  DatabaseHelper._internal();
+  NoteDatabase._internal();
 
   static Database? _database;
 
