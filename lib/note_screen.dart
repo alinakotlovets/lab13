@@ -21,7 +21,7 @@ class _NotesScreenState extends State<NotesScreen> {
   Future<void> _loadNotes() async {
     List<Note> notes = await _databaseHelper.getNotes();
     setState(() {
-      _notes = notes;
+      _notes = notes.reversed.toList(); // Відображаємо останні нотатки першими
     });
   }
 
@@ -39,7 +39,7 @@ class _NotesScreenState extends State<NotesScreen> {
 
     await _databaseHelper.insertNote(newNote);
     _controller.clear();
-    _loadNotes();
+    _loadNotes(); // Перезавантажуємо список
   }
 
   void _showErrorDialog(String message) {
@@ -66,34 +66,66 @@ class _NotesScreenState extends State<NotesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Застосунок для збереження нотаток'),
+        title: Text('Мої нотатки'),
+        centerTitle: true,
       ),
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _controller,
-              decoration: InputDecoration(
-                labelText: 'Введіть нотатку',
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: _addNote,
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _controller,
+                    decoration: InputDecoration(
+                      labelText: 'Нова нотатка',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+                SizedBox(width: 8),
+                ElevatedButton(
+                  onPressed: _addNote,
+                  child: Text("Add"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF6B558C), // Темно-фіолетова кнопка
+                    foregroundColor: Colors.white,
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  ),
+                ),
+              ],
             ),
           ),
           Expanded(
             child: ListView.builder(
               itemCount: _notes.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(_notes[index].text),
-                  subtitle: Text(_notes[index].createdAt),
+                return Card(
+                  child: Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          _notes[index].text,
+                          style: Theme.of(context).textTheme.bodyLarge, // Основний текст
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          _notes[index].formattedDate, // Форматована дата
+                          style: Theme.of(context).textTheme.bodyMedium, // Текст для дати
+                        ),
+                      ],
+                    ),
+                  ),
                 );
               },
             ),
           ),
+
         ],
       ),
     );

@@ -1,0 +1,1 @@
+ /home/maks/cros/.dart_tool/flutter_build/97efca32c439bb9b3f006a46538e245c/native_assets.yaml: 
