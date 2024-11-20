@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'database_helper.dart';
+import 'note_database.dart';
 import 'note.dart';
 
-class NotesScreen extends StatefulWidget {
+class NotesPage extends StatefulWidget {
   @override
-  _NotesScreenState createState() => _NotesScreenState();
+  _NotesPageState createState() => _NotesPageState();
 }
 
-class _NotesScreenState extends State<NotesScreen> {
-  final DatabaseHelper _databaseHelper = DatabaseHelper();
+class _NotesPageState extends State<NotesPage> {
+  final NoteDatabase _noteDatabase = NoteDatabase();
   final TextEditingController _controller = TextEditingController();
   List<Note> _notes = [];
 
@@ -19,9 +19,9 @@ class _NotesScreenState extends State<NotesScreen> {
   }
 
   Future<void> _loadNotes() async {
-    List<Note> notes = await _databaseHelper.getNotes();
+    List<Note> notes = await _noteDatabase.getNotes();
     setState(() {
-      _notes = notes.reversed.toList(); // Відображаємо останні нотатки першими
+      _notes = notes.reversed.toList();
     });
   }
 
@@ -37,9 +37,9 @@ class _NotesScreenState extends State<NotesScreen> {
       createdAt: DateTime.now().toString(),
     );
 
-    await _databaseHelper.insertNote(newNote);
+    await _noteDatabase.insertNote(newNote);
     _controller.clear();
-    _loadNotes(); // Перезавантажуємо список
+    _loadNotes();
   }
 
   void _showErrorDialog(String message) {
@@ -91,7 +91,7 @@ class _NotesScreenState extends State<NotesScreen> {
                   onPressed: _addNote,
                   child: Text("Add"),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF6B558C), // Темно-фіолетова кнопка
+                    backgroundColor: Color(0xFF6B558C),
                     foregroundColor: Colors.white,
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                   ),
@@ -111,12 +111,12 @@ class _NotesScreenState extends State<NotesScreen> {
                       children: [
                         Text(
                           _notes[index].text,
-                          style: Theme.of(context).textTheme.bodyLarge, // Основний текст
+                          style: Theme.of(context).textTheme.bodyLarge,
                         ),
                         SizedBox(height: 8),
                         Text(
-                          _notes[index].formattedDate, // Форматована дата
-                          style: Theme.of(context).textTheme.bodyMedium, // Текст для дати
+                          _notes[index].formattedDate,
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ],
                     ),
@@ -125,7 +125,6 @@ class _NotesScreenState extends State<NotesScreen> {
               },
             ),
           ),
-
         ],
       ),
     );
