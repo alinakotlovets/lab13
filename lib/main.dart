@@ -63,7 +63,7 @@ class NotesApp extends StatelessWidget {
           ),
         ),
       ),
-      home: NotesScreen(),
+      home: NotesPage(),
     );
   }
 }
