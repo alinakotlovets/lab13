@@ -5,11 +5,11 @@ class Note {
 
   Note({this.id, required this.text, required this.createdAt});
 
-  /// Форматуємо дату у вигляді 'день.місяць.рік, година:хвилина:секунда'
+ 
   String get formattedDate {
-    DateTime date = DateTime.parse(createdAt); // Парсимо рядок у DateTime
-    String day = date.day.toString().padLeft(2, '0'); // Додаємо 0, якщо день < 10
-    String month = date.month.toString().padLeft(2, '0'); // Додаємо 0, якщо місяць < 10
+    DateTime date = DateTime.parse(createdAt); 
+    String day = date.day.toString().padLeft(2, '0');
+    String month = date.month.toString().padLeft(2, '0');
     String year = date.year.toString();
     String hour = date.hour.toString().padLeft(2, '0');
     String minute = date.minute.toString().padLeft(2, '0');
